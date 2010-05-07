@@ -2,35 +2,9 @@ package org.asm.n2w;
 
 public class Converter {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		final Converter c = new Converter();
-		try {		     
-			int i = getNumber(args);
-			System.out.println(c.convert(i));
-		} catch (NumberFormatException nfe) {
-			printUsage(nfe.getMessage());
-		}
-	}
-
-	private static int getNumber(String[] args) {
-		if (args.length < 1 || args[0] == null) {
-			throw new NumberFormatException("null is not an integer");
-		}
-		return Integer.parseInt(args[0]);
-	}
-
-	private static void printUsage(String message) {
-		System.out.println("Usage: " + Converter.class.getSimpleName() + " i");
-		System.out.println("       where i is an integer");
-		System.out.println(message);		
-	}
-	
 	public String convert(int i) {
 		if (i < 0) {
-			throw new NumberFormatException("Cannot convert negative numbers");
+			return "negative " + convert(-i);
 		} else if (i < 20) {
 			return convertZeroToTwenty(i);
 		} else if (i < 100) {
@@ -41,8 +15,24 @@ public class Converter {
 				return tens;
 			}
 			return tens + '-' + convertZeroToTwenty(u);
+		} else if (i < 1000) {
+			int h = i / 100; // integer division gets hundreds digit
+			String hundreds = convertZeroToTwenty(h) + " hundred";
+			int r = i % 100; // modulus gets tens and units
+			if (r == 0) {
+				return hundreds;
+			}
+			return hundreds + ' ' + convert(r);
+		} else if (i < 1000000) {
+			int th = i / 1000; // integer division gets thousands
+			String thousands = convert(th) + " thousand";
+			int r = i % 1000; // modulus gets hundreds, tens, and units
+			if (r == 0) {
+				return thousands;
+			}
+			return thousands + ' ' + convert(r);
 		}
-		throw new NumberFormatException("Cannot convert above 99");
+		throw new NumberFormatException("Cannot convert above 999,999");
 	}
 
 	private String convertZeroToTwenty(int i) {
@@ -68,9 +58,8 @@ public class Converter {
 			case 16 :
 			case 17 :
 			case 19 : return convertZeroToTwenty(i-10)+"teen";
-			
-			default: throw new NumberFormatException(i + " is not a digit below twenty");
 		}
+		throw new NumberFormatException(i + " is not a digit below twenty");
 	}
 	
 	private String convertTens(int i) {

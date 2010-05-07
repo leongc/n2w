@@ -15,46 +15,66 @@ public class ConverterTest {
 	}
 	@Test
 	public void uniques() {
-		Assert.assertEquals("zero", c.convert(0));
-		Assert.assertEquals("one", c.convert(1));
-		Assert.assertEquals("two", c.convert(2));
-		Assert.assertEquals("three", c.convert(3));
-		Assert.assertEquals("four", c.convert(4));
-		Assert.assertEquals("five", c.convert(5));
-		Assert.assertEquals("six", c.convert(6));
-		Assert.assertEquals("seven", c.convert(7));
-		Assert.assertEquals("eight", c.convert(8));
-		Assert.assertEquals("nine", c.convert(9));
-		Assert.assertEquals("ten", c.convert(10));
-		Assert.assertEquals("eleven", c.convert(11));
-		Assert.assertEquals("twelve", c.convert(12));
-		Assert.assertEquals("thirteen", c.convert(13));
-		Assert.assertEquals("fifteen", c.convert(15));
-		Assert.assertEquals("eighteen", c.convert(18));
+		assertConvert("zero", 0);
+		assertConvert("one", 1);
+		assertConvert("two", 2);
+		assertConvert("three", 3);
+		assertConvert("four", 4);
+		assertConvert("five", 5);
+		assertConvert("six", 6);
+		assertConvert("seven", 7);
+		assertConvert("eight", 8);
+		assertConvert("nine", 9);
+		assertConvert("ten", 10);
+		assertConvert("eleven", 11);
+		assertConvert("twelve", 12);
+		assertConvert("thirteen", 13);
+		assertConvert("fifteen", 15);
+		assertConvert("eighteen", 18);
 	}
 	@Test
 	public void teens() {
-		Assert.assertEquals("fourteen", c.convert(14));
-		Assert.assertEquals("sixteen", c.convert(16));
-		Assert.assertEquals("seventeen", c.convert(17));
-		Assert.assertEquals("nineteen", c.convert(19));
+		assertConvert("fourteen", 14);
+		assertConvert("sixteen", 16);
+		assertConvert("seventeen", 17);
+		assertConvert("nineteen", 19);
 	}
 	@Test
 	public void tens() {
-		Assert.assertEquals("ten", c.convert(10));
-		Assert.assertEquals("twenty", c.convert(20));
-		Assert.assertEquals("thirty", c.convert(30));
-		Assert.assertEquals("forty", c.convert(40));
-		Assert.assertEquals("fifty", c.convert(50));
-		Assert.assertEquals("sixty", c.convert(60));
-		Assert.assertEquals("seventy", c.convert(70));
-		Assert.assertEquals("eighty", c.convert(80));
-		Assert.assertEquals("ninety", c.convert(90));
+		assertConvert("ten", 10);
+		assertConvert("twenty", 20);
+		assertConvert("thirty", 30);
+		assertConvert("forty", 40);
+		assertConvert("fifty", 50);
+		assertConvert("sixty", 60);
+		assertConvert("seventy", 70);
+		assertConvert("eighty", 80);
+		assertConvert("ninety", 90);
 	}
 	@Test
 	public void doubleDigits() {
-		Assert.assertEquals("fifty-five", c.convert(55));
-		Assert.assertEquals("ninety-nine", c.convert(99));
+		assertConvert("fifty-five", 55);
+		assertConvert("ninety-nine", 99);
+	}
+	@Test
+	public void tripleDigits() {
+		assertConvert("one hundred", 100);
+		assertConvert("five hundred one", 501);
+		assertConvert("nine hundred eighty-seven", 987);
+	}
+	@Test
+	public void thousands() {
+		assertConvert("one thousand", 1000);
+		assertConvert("two thousand one", 2001);
+		assertConvert("sixty-four thousand", 64000);
+		assertConvert("nine hundred eighty-seven thousand six hundred fifty-four", 987654);
+	}
+	@Test
+	public void negatives() {
+		assertConvert("negative sixty-nine", -69);
 	}
 	
+	private void assertConvert(String expected, int i) {
+		Assert.assertEquals(expected, c.convert(i));
+	}
 }
