@@ -7,46 +7,54 @@ public class Converter {
 		if (s.charAt(0) == '-') {
 			return "negative " + convert(s.substring(1));
 		}
-		if (s.length() < 4) {
-			String result = convertUpToThreeDigits(s);
-			return result.isEmpty() ? "zero" : result;
-		}
-		int lastTripletIndex = s.length()-3;
-		return convertTriplets(s.substring(0, lastTripletIndex)
-			, 0
-			, convertUpToThreeDigits(s.substring(lastTripletIndex)));
+		String result = convertTriplets(s, 0, "");
+		return result.isEmpty() ? "zero" : result;
 	}
 
 	private String convertTriplets(String prefixDigits, int tripletsConverted,
 			String suffixWords) {
+		String prefixWords;
+		String tripletWords = getTripletWords(tripletsConverted);
 		if (prefixDigits.length() < 4) {
-			String prefixWords = convertUpToThreeDigits(prefixDigits);
-			return prefixWords.isEmpty() ? suffixWords : 
-				prefixWords + ' ' + getTripletWords(tripletsConverted) + 
-				(suffixWords.isEmpty() ? suffixWords : ' ' + suffixWords);
+			prefixWords = convertUpToThreeDigits(prefixDigits);
+			return assembleTriplet(prefixWords, tripletWords, suffixWords);
 		} 
 		int lastTripletIndex = prefixDigits.length()-3;
-		String prefixWords = convertUpToThreeDigits(prefixDigits.substring(lastTripletIndex));
+		prefixWords = convertUpToThreeDigits(prefixDigits.substring(lastTripletIndex));
 		return convertTriplets(prefixDigits.substring(0, lastTripletIndex)
 			, tripletsConverted + 1
-			, prefixWords.isEmpty() ? suffixWords :
-				prefixWords + ' ' + getTripletWords(tripletsConverted) +
-				(suffixWords.isEmpty() ? suffixWords : ' ' + suffixWords));
+			, assembleTriplet(prefixWords, tripletWords, suffixWords));
+	}
+
+	private String assembleTriplet(String prefixWords, String tripletWords,
+			String suffixWords) {
+		if (prefixWords.isEmpty()) {
+			return suffixWords; 
+		}
+		StringBuilder sb = new StringBuilder(prefixWords);
+		if (!tripletWords.isEmpty()) {
+			sb.append(' ').append(tripletWords); 
+		}
+		if (!suffixWords.isEmpty()) {
+			sb.append(' ').append(suffixWords);
+		}
+		return sb.toString();
 	}
 
 	private String getTripletWords(int tripletsConverted) {
 		switch (tripletsConverted) {
-			case 0 : return "thousand";
-			case 1 : return "million";
-			case 2 : return "billion";
-			case 3 : return "trillion";
-			case 4 : return "quadrillion";
-			case 5 : return "quintillion";
-			case 6 : return "sextillion";
-			case 7 : return "septillion";
-			case 8 : return "octillion";
-			case 9 : return "nonillion";
-			case 10 : return "decillion";
+		case 0 : return "";
+		case 1 : return "thousand";
+		case 2 : return "million";
+		case 3 : return "billion";
+		case 4 : return "trillion";
+		case 5 : return "quadrillion";
+		case 6 : return "quintillion";
+		case 7 : return "sextillion";
+		case 8 : return "septillion";
+		case 9 : return "octillion";
+		case 10 : return "nonillion";
+		case 11 : return "decillion";
 		}
 		throw new NumberFormatException(tripletsConverted + " triplets is beyond the converter's vocabulary");
 	}

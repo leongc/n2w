@@ -86,8 +86,10 @@ public class ConverterTest {
 	}
 	@Test
 	public void leadingZeroes() {
-		assertConvert("zero", "00");
 		assertConvert("seven", "007");
+		assertConvert("zero", "000");
+		assertConvert("zero", "00000000");
+		assertConvert("negative one hundred", "-00100");
 	}
 	private void assertConvert(String expected, String s) {
 		Assert.assertEquals(expected, c.convert(s));
