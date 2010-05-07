@@ -15,7 +15,6 @@ public class ConverterTest {
 	}
 	@Test
 	public void uniques() {
-		assertConvert("zero", 0);
 		assertConvert("one", 1);
 		assertConvert("two", 2);
 		assertConvert("three", 3);
@@ -31,6 +30,7 @@ public class ConverterTest {
 		assertConvert("thirteen", 13);
 		assertConvert("fifteen", 15);
 		assertConvert("eighteen", 18);
+		assertConvert("zero", 0);
 	}
 	@Test
 	public void teens() {
@@ -73,8 +73,21 @@ public class ConverterTest {
 	public void negatives() {
 		assertConvert("negative sixty-nine", -69);
 	}
+	@Test
+	public void largeNumbers() {
+		assertConvert("four trillion one", "4000000000001");
+		assertConvert("nine billion eight hundred seventy-six million five hundred forty-three thousand two hundred ten", "9876543210");
+		assertConvert("nine nonillion eight octillion seven septillion six sextillion five quintillion four quadrillion three trillion two billion one million", "9008007006005004003002001000000");
+		assertConvert("one decillion fifty-five million", "1000000000000000000000000055000000");
+	}
 	
 	private void assertConvert(String expected, int i) {
 		Assert.assertEquals(expected, c.convert(i));
+		assertConvert(expected, Integer.toString(i));
+//		assertConvert(expected, '0' + Integer.toString(i));
+		assertConvert("negative " + expected, '-' + Integer.toString(i));
+	}
+	private void assertConvert(String expected, String s) {
+		Assert.assertEquals(expected, c.convert(s));
 	}
 }
