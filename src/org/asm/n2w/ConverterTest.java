@@ -84,7 +84,11 @@ public class ConverterTest {
 				, "9008007006005004003002001000000");
 		assertConvert("one decillion fifty-five million", "1000000000000000000000000055000000");
 	}
-	
+	@Test
+	public void leadingZeroes() {
+		assertConvert("zero", "00");
+		assertConvert("seven", "007");
+	}
 	private void assertConvert(String expected, String s) {
 		Assert.assertEquals(expected, c.convert(s));
 	}
